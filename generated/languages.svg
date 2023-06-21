@@ -104,7 +104,7 @@ div.ellipsis {
 
 <div>
 <span class="progress">
-<span style="background-color: #f1e05a;width: 48.129%;" class="progress-item"></span><span style="background-color: #4F5D95;width: 33.846%;" class="progress-item"></span><span style="background-color: #3178c6;width: 10.414%;" class="progress-item"></span><span style="background-color: #563d7c;width: 4.483%;" class="progress-item"></span><span style="background-color: #c6538c;width: 1.867%;" class="progress-item"></span><span style="background-color: #41b883;width: 0.878%;" class="progress-item"></span><span style="background-color: #ff5a03;width: 0.288%;" class="progress-item"></span><span style="background-color: #ff3e00;width: 0.053%;" class="progress-item"></span><span style="background-color: #384d54;width: 0.023%;" class="progress-item"></span><span style="background-color: #c1d026;width: 0.018%;" class="progress-item"></span><span style="background-color: #3B2F63;width: 0.000%;" class="progress-item"></span>
+<span style="background-color: #f1e05a;width: 48.110%;" class="progress-item"></span><span style="background-color: #4F5D95;width: 33.833%;" class="progress-item"></span><span style="background-color: #3178c6;width: 10.410%;" class="progress-item"></span><span style="background-color: #563d7c;width: 4.481%;" class="progress-item"></span><span style="background-color: #c6538c;width: 1.867%;" class="progress-item"></span><span style="background-color: #41b883;width: 0.878%;" class="progress-item"></span><span style="background-color: #ff5a03;width: 0.288%;" class="progress-item"></span><span style="background-color: #ff3e00;width: 0.053%;" class="progress-item"></span><span style="background-color: #fcb32c;width: 0.040%;" class="progress-item"></span><span style="background-color: #384d54;width: 0.023%;" class="progress-item"></span><span style="background-color: #c1d026;width: 0.018%;" class="progress-item"></span><span style="background-color: #3B2F63;width: 0.000%;" class="progress-item"></span>
 </span>
 </div>
 
@@ -116,7 +116,7 @@ div.ellipsis {
 viewBox="0 0 16 16" version="1.1" width="16" height="16"><path
 fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8z"></path></svg>
 <span class="lang">JavaScript</span>
-<span class="percent">48.13%</span>
+<span class="percent">48.11%</span>
 </li>
 
 
@@ -125,7 +125,7 @@ fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8z"></path></svg>
 viewBox="0 0 16 16" version="1.1" width="16" height="16"><path
 fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8z"></path></svg>
 <span class="lang">PHP</span>
-<span class="percent">33.85%</span>
+<span class="percent">33.83%</span>
 </li>
 
 
@@ -184,6 +184,15 @@ fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8z"></path></svg>
 
 
 <li style="animation-delay: 1200ms;">
+<svg xmlns="http://www.w3.org/2000/svg" class="octicon" style="fill:#fcb32c;"
+viewBox="0 0 16 16" version="1.1" width="16" height="16"><path
+fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8z"></path></svg>
+<span class="lang">MDX</span>
+<span class="percent">0.04%</span>
+</li>
+
+
+<li style="animation-delay: 1350ms;">
 <svg xmlns="http://www.w3.org/2000/svg" class="octicon" style="fill:#384d54;"
 viewBox="0 0 16 16" version="1.1" width="16" height="16"><path
 fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8z"></path></svg>
@@ -192,7 +201,7 @@ fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8z"></path></svg>
 </li>
 
 
-<li style="animation-delay: 1350ms;">
+<li style="animation-delay: 1500ms;">
 <svg xmlns="http://www.w3.org/2000/svg" class="octicon" style="fill:#c1d026;"
 viewBox="0 0 16 16" version="1.1" width="16" height="16"><path
 fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8z"></path></svg>
@@ -201,7 +210,7 @@ fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8z"></path></svg>
 </li>
 
 
-<li style="animation-delay: 1500ms;">
+<li style="animation-delay: 1650ms;">
 <svg xmlns="http://www.w3.org/2000/svg" class="octicon" style="fill:#3B2F63;"
 viewBox="0 0 16 16" version="1.1" width="16" height="16"><path
 fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8z"></path></svg>
