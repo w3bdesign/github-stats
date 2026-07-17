@@ -350,6 +350,29 @@ fn getReposByYear(
     );
 
     if (parsed.errors) |errors| {
+        // GitHub rejects overly expensive queries with a
+        // RESOURCE_LIMITS_EXCEEDED error before returning any data. When that
+        // happens we subdivide the month range and retry, exactly as we do
+        // when too many repositories are returned.
+        var resource_limited = false;
+        for (errors) |e| {
+            if (e.type) |t| {
+                if (std.mem.eql(u8, t, "RESOURCE_LIMITS_EXCEEDED")) {
+                    resource_limited = true;
+                }
+            }
+        }
+        if (resource_limited) {
+            if (try subdivide(context, year, start_month, months)) {
+                return;
+            }
+            std.log.err(
+                "Query for {d}/{d} exceeds GitHub resource limits and " ++
+                    "cannot be subdivided further (range is a single month).",
+                .{ start_month + 1, year },
+            );
+            return error.ResourceLimitsExceeded;
+        }
         for (errors) |e| {
             std.log.err(
                 "GraphQL error for {d}/{d}: {s}{s}{s}",
@@ -375,31 +398,19 @@ fn getReposByYear(
     );
 
     const limit = 100;
-    // This slightly convoluted logic subdivides the months range for the
-    // current call. It assumes the initial months range is 12, and subdivides
-    // by increasingly large prime factors of 12. If it cannot divide by any
-    // prime factors of 12, the size of the range is 1. In that case, it emits a
-    // warning and proceeds with processing the data.
+    // If too many repositories were returned to fit in a single page, try to
+    // subdivide the month range so we don't lose data. If the range cannot be
+    // subdivided further (a single month), emit a warning and proceed with the
+    // (possibly truncated) data.
     if (stats.commitContributionsByRepository.len >= limit) {
-        for (&[_]usize{ 2, 3 }) |factor| {
-            if (months % factor == 0) {
-                for (0..factor) |i| {
-                    try getReposByYear(
-                        context,
-                        year,
-                        start_month + (months / factor) * i,
-                        months / factor,
-                    );
-                }
-                return;
-            }
-        } else {
-            std.log.warn(
-                "More than {d} repos returned for {d}/{d}. " ++
-                    "Some data may be omitted due to GitHub API limitations.",
-                .{ limit, start_month + 1, year },
-            );
+        if (try subdivide(context, year, start_month, months)) {
+            return;
         }
+        std.log.warn(
+            "More than {d} repos returned for {d}/{d}. " ++
+                "Some data may be omitted due to GitHub API limitations.",
+            .{ limit, start_month + 1, year },
+        );
     }
 
     context.result.repo_contributions += stats.totalRepositoryContributions;
