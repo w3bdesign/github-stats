@@ -352,8 +352,9 @@ fn getReposByYear(
     if (parsed.errors) |errors| {
         // GitHub rejects overly expensive queries with a
         // RESOURCE_LIMITS_EXCEEDED error before returning any data. When that
-        // happens we subdivide the month range and retry, exactly as we do
-        // when too many repositories are returned.
+        // happens we subdivide the month range (by prime factors of its
+        // length) and retry, exactly as we do when too many repositories are
+        // returned.
         var resource_limited = false;
         for (errors) |e| {
             if (e.type) |t| {
