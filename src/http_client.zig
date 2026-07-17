@@ -97,9 +97,9 @@ pub fn fetch(self: *Self, request: Request, retries: isize) !Response {
     if (isTransientStatus(status) and retries > 0) {
         // Exponential backoff based on how many retries have already been
         // consumed. `retries` starts high and counts down, so invert it to
-        // grow the delay as attempts are exhausted (capped at ~8s).
+        // grow the delay as attempts are exhausted (capped at 8s).
         const attempt: u6 = @intCast(@min(@max(8 - retries, 0), 3));
-        const delay_ns: u64 = @as(u64, 1_000_000_000) << attempt;
+        const delay_s: i64 = @as(i64, 1) << attempt;
         std.log.warn(
             "Request to {s} failed with status {d} ({?s}). " ++
                 "Retrying in {d}s ({d} attempt{s} left)...",
@@ -107,14 +107,14 @@ pub fn fetch(self: *Self, request: Request, retries: isize) !Response {
                 request.url,
                 @intFromEnum(status),
                 status.phrase(),
-                delay_ns / 1_000_000_000,
+                delay_s,
                 retries,
                 if (retries != 1) "s" else "",
             },
         );
         writer.deinit();
         writer_initialized = false;
-        std.Thread.sleep(delay_ns);
+        try self.io.sleep(.fromSeconds(delay_s), .real);
         return self.fetch(request, retries - 1);
     }
 
