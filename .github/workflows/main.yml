@@ -49,6 +49,10 @@ jobs:
         # TODO: Remove this when they get their API working again
         # https://github.com/orgs/community/discussions/192970
         MAX_RETRIES: 5
+        # Only fetch contribution data from this year onward. Older years are
+        # skipped, which avoids failures (e.g. rate limiting / forbidden) on
+        # historical data we don't care about.
+        SINCE_YEAR: 2026
 
     - name: Commit to the repo
       run: |
