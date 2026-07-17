@@ -167,10 +167,10 @@ and retrieve the images.
    following lines of code into your markdown content.
    - Replace `[USERNAME]` in the links below with your own username.
    ``` markdown
-   ![](https://github.com/[USERNAME]/github-stats/blob/generated/overview.svg#gh-dark-mode-only)
-   ![](https://github.com/[USERNAME]/github-stats/blob/generated/overview.svg#gh-light-mode-only)
-   ![](https://github.com/[USERNAME]/github-stats/blob/generated/languages.svg#gh-dark-mode-only)
-   ![](https://github.com/[USERNAME]/github-stats/blob/generated/languages.svg#gh-light-mode-only)
+   ![](https://github.com/w3bdesign/github-stats/blob/generated/overview.svg#gh-dark-mode-only)
+   ![](https://github.com/w3bdesign/github-stats/blob/generated/overview.svg#gh-light-mode-only)
+   ![](https://github.com/w3bdesign/github-stats/blob/generated/languages.svg#gh-dark-mode-only)
+   ![](https://github.com/w3bdesign/github-stats/blob/generated/languages.svg#gh-light-mode-only)
    [Created by `jstrieb/github-stats`.](https://github.com/jstrieb/github-stats)
    ```
 1. Star this repo if you like it!
