@@ -231,32 +231,6 @@ fn getBasicInfo(client: *HttpClient, arena: *std.heap.ArenaAllocator) !struct {
     };
 }
 
-/// Attempt to subdivide a month range into smaller ranges (by prime factors of
-/// the range length) and recurse into `getReposByYear` for each sub-range.
-/// Returns `true` if the range was subdivided and processed, or `false` if the
-/// range could not be subdivided further (i.e. it is a single month).
-fn subdivide(
-    context: anytype,
-    year: usize,
-    start_month: usize,
-    months: usize,
-) !bool {
-    for (&[_]usize{ 2, 3 }) |factor| {
-        if (months % factor == 0) {
-            for (0..factor) |i| {
-                try getReposByYear(
-                    context,
-                    year,
-                    start_month + (months / factor) * i,
-                    months / factor,
-                );
-            }
-            return true;
-        }
-    }
-    return false;
-}
-
 fn getReposByYear(
     context: struct {
         allocator: std.mem.Allocator,
