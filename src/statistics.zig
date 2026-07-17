@@ -306,37 +306,69 @@ fn getReposByYear(
         );
         return error.RequestFailed;
     }
-    const stats = (try std.json.parseFromSliceLeaky(
-        struct { data: struct { viewer: struct {
-            contributionsCollection: struct {
-                totalRepositoryContributions: u32,
-                totalIssueContributions: u32,
-                totalCommitContributions: u32,
-                totalPullRequestContributions: u32,
-                totalPullRequestReviewContributions: u32,
-                commitContributionsByRepository: []struct {
-                    repository: struct {
-                        nameWithOwner: []const u8,
-                        stargazerCount: u32,
-                        forkCount: u32,
-                        isPrivate: bool,
-                        languages: ?struct {
-                            edges: ?[]struct {
-                                size: u32,
-                                node: struct {
-                                    name: []const u8,
-                                    color: ?[]const u8,
+    // The GraphQL endpoint returns HTTP 200 even when the query fails (for
+    // example due to rate limiting or permission problems). In those cases the
+    // top-level `data` field may be null or missing and an `errors` array is
+    // returned instead. Parse a lenient envelope first so we can surface a
+    // meaningful error rather than a cryptic `MissingField`.
+    const parsed = try std.json.parseFromSliceLeaky(
+        struct {
+            data: ?struct { viewer: ?struct {
+                contributionsCollection: ?struct {
+                    totalRepositoryContributions: u32 = 0,
+                    totalIssueContributions: u32 = 0,
+                    totalCommitContributions: u32 = 0,
+                    totalPullRequestContributions: u32 = 0,
+                    totalPullRequestReviewContributions: u32 = 0,
+                    commitContributionsByRepository: []struct {
+                        repository: struct {
+                            nameWithOwner: []const u8,
+                            stargazerCount: u32,
+                            forkCount: u32,
+                            isPrivate: bool,
+                            languages: ?struct {
+                                edges: ?[]struct {
+                                    size: u32,
+                                    node: struct {
+                                        name: []const u8,
+                                        color: ?[]const u8,
+                                    },
                                 },
                             },
                         },
-                    },
-                },
-            },
-        } } },
+                    } = &.{},
+                } = null,
+            } = null } = null,
+            errors: ?[]struct {
+                message: []const u8,
+                type: ?[]const u8 = null,
+            } = null,
+        },
         context.arena.allocator(),
         response.body,
         .{ .ignore_unknown_fields = true, .allocate = .alloc_always },
-    )).data.viewer.contributionsCollection;
+    );
+
+    if (parsed.errors) |errors| {
+        for (errors) |e| {
+            std.log.err(
+                "GraphQL error for {d}/{d}: {s}{s}{s}",
+                .{
+                    start_month + 1,
+                    year,
+                    e.message,
+                    if (e.type != null) " - " else "",
+                    e.type orelse "",
+                },
+            );
+        }
+        return error.GraphQLError;
+    }
+
+    const data = parsed.data orelse return error.MissingData;
+    const viewer = data.viewer orelse return error.MissingData;
+    const stats =
+        viewer.contributionsCollection orelse return error.MissingData;
     std.log.info(
         "Parsed {d} total repositories from {d}",
         .{ stats.commitContributionsByRepository.len, year },
