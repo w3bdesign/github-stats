@@ -221,12 +221,9 @@ pub fn main(init: std.process.Init) !void {
         else
             null;
     defer if (exclude_repos) |exclude| allocator.free(exclude);
-    const exclude_langs =
-        if (args.exclude_langs) |exclude|
-            try splitList(allocator, exclude, ",\t\r\n|\"'\x00")
-        else
-            null;
-    defer if (exclude_langs) |exclude| allocator.free(exclude);
+    // Languages to exclude from the statistics. Edit `always_exclude_langs`
+    // (near the top of this file) to add or remove exclusions.
+    const exclude_langs: []const []const u8 = &always_exclude_langs;
 
     var stats: Statistics = if (args.json_input_file) |path| stats: {
         const data = try readFile(allocator, io, path);
