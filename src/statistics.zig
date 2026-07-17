@@ -363,8 +363,18 @@ fn getReposByYear(
             }
         }
         if (resource_limited) {
-            if (try subdivide(context, year, start_month, months)) {
-                return;
+            for (&[_]usize{ 2, 3 }) |factor| {
+                if (months % factor == 0) {
+                    for (0..factor) |i| {
+                        try getReposByYear(
+                            context,
+                            year,
+                            start_month + (months / factor) * i,
+                            months / factor,
+                        );
+                    }
+                    return;
+                }
             }
             std.log.err(
                 "Query for {d}/{d} exceeds GitHub resource limits and " ++
