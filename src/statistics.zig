@@ -117,11 +117,13 @@ pub fn init(
     allocator: std.mem.Allocator,
     io: std.Io,
     max_retries: ?usize,
+    since_year: ?usize,
 ) !Statistics {
     var arena = std.heap.ArenaAllocator.init(allocator);
     defer arena.deinit();
 
-    var self: Statistics = try getRepos(allocator, &arena, client);
+    var self: Statistics =
+        try getRepos(allocator, &arena, client, since_year);
     errdefer self.deinit(allocator);
     try self.getLinesChanged(&arena, io, client, max_retries);
     return self;
@@ -539,6 +541,7 @@ fn getRepos(
     allocator: std.mem.Allocator,
     arena: *std.heap.ArenaAllocator,
     client: *HttpClient,
+    since_year: ?usize,
 ) !Statistics {
     var result: Statistics = .{
         .user = undefined,
@@ -586,6 +589,15 @@ fn getRepos(
     }
 
     for (info.years) |year| {
+        if (since_year) |since| {
+            if (year < since) {
+                std.log.info(
+                    "Skipping {d} (before --since-year {d})",
+                    .{ year, since },
+                );
+                continue;
+            }
+        }
         try getReposByYear(.{
             .allocator = allocator,
             .arena = arena,

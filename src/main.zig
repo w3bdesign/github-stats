@@ -64,6 +64,10 @@ const Args = struct {
     overview_template: ?[]const u8 = null,
     languages_template: ?[]const u8 = null,
     max_retries: ?usize = 25,
+    // Only fetch contribution data for this year and newer. When null, all of
+    // the user's contribution years are fetched. Useful to avoid errors (e.g.
+    // rate limiting) on old years you don't care about.
+    since_year: ?usize = null,
     version: bool = false,
     dump_overview_template: ?[]const u8 = null,
     dump_languages_template: ?[]const u8 = null,
@@ -238,6 +242,7 @@ pub fn main(init: std.process.Init) !void {
             allocator,
             io,
             args.max_retries,
+            args.since_year,
         );
     } else unreachable;
     defer stats.deinit(allocator);
