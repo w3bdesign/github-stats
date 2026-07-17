@@ -35,6 +35,20 @@ fn logFn(
 const embedded_overview_template = @embedFile("templates/overview.svg");
 const embedded_languages_template = @embedFile("templates/languages.svg");
 
+/// Languages that are always excluded from the statistics, in addition to any
+/// provided via the `EXCLUDE_LANGS` environment variable / `--exclude-langs`
+/// argument. Language names are matched using the same glob rules as
+/// `EXCLUDE_LANGS` (case-sensitive, so match GitHub's Linguist names exactly).
+/// To add an exclusion, add a string to this list; to remove one, delete it.
+const always_exclude_langs = [_][]const u8{
+    "CSS",
+    "HTML",
+    "MDX",
+    "Jupyter Notebook",
+    "SCSS",
+    "Rust",
+};
+
 const Args = struct {
     access_token: ?[]const u8 = null,
     json_input_file: ?[]const u8 = null,
