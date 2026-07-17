@@ -413,8 +413,18 @@ fn getReposByYear(
     // subdivided further (a single month), emit a warning and proceed with the
     // (possibly truncated) data.
     if (stats.commitContributionsByRepository.len >= limit) {
-        if (try subdivide(context, year, start_month, months)) {
-            return;
+        for (&[_]usize{ 2, 3 }) |factor| {
+            if (months % factor == 0) {
+                for (0..factor) |i| {
+                    try getReposByYear(
+                        context,
+                        year,
+                        start_month + (months / factor) * i,
+                        months / factor,
+                    );
+                }
+                return;
+            }
         }
         std.log.warn(
             "More than {d} repos returned for {d}/{d}. " ++
