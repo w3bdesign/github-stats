@@ -291,7 +291,7 @@ pub fn main(init: std.process.Init) !void {
         aggregate_stats.views += repository.views;
         aggregate_stats.repos += 1;
         if (repository.languages) |langs| for (langs) |language| {
-            if (glob.matchAny(exclude_langs orelse &.{}, language.name)) {
+            if (glob.matchAny(exclude_langs, language.name)) {
                 continue;
             }
             if (language.color) |color| {
