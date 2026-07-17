@@ -42,6 +42,19 @@ pub fn deinit(self: *Self) void {
     self.allocator.free(self.token);
 }
 
+/// Returns true for HTTP status codes that indicate a transient server-side
+/// problem which is likely to succeed if retried after a short delay.
+fn isTransientStatus(status: std.http.Status) bool {
+    return switch (status) {
+        .bad_gateway, // 502
+        .service_unavailable, // 503
+        .gateway_timeout, // 504
+        .too_many_requests, // 429
+        => true,
+        else => false,
+    };
+}
+
 pub fn fetch(self: *Self, request: Request, retries: isize) !Response {
     if (retries <= -1) {
         return error.TooManyRetries;
@@ -76,6 +89,35 @@ pub fn fetch(self: *Self, request: Request, retries: isize) !Response {
         },
         else => return err,
     }).status;
+
+    // Transient server-side errors (e.g. Gateway Timeout, Bad Gateway) are
+    // common when talking to the GitHub API and usually succeed on a retry.
+    // Retry them here with exponential backoff so callers don't have to abort
+    // the entire run over a momentary hiccup.
+    if (isTransientStatus(status) and retries > 0) {
+        // Exponential backoff based on how many retries have already been
+        // consumed. `retries` starts high and counts down, so invert it to
+        // grow the delay as attempts are exhausted (capped at ~8s).
+        const attempt: u6 = @intCast(@min(@max(8 - retries, 0), 3));
+        const delay_ns: u64 = @as(u64, 1_000_000_000) << attempt;
+        std.log.warn(
+            "Request to {s} failed with status {d} ({?s}). " ++
+                "Retrying in {d}s ({d} attempt{s} left)...",
+            .{
+                request.url,
+                @intFromEnum(status),
+                status.phrase(),
+                delay_ns / 1_000_000_000,
+                retries,
+                if (retries != 1) "s" else "",
+            },
+        );
+        writer.deinit();
+        writer_initialized = false;
+        std.Thread.sleep(delay_ns);
+        return self.fetch(request, retries - 1);
+    }
+
     return .{
         .body = try writer.toOwnedSlice(),
         .status = status,
