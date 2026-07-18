@@ -52,7 +52,7 @@ jobs:
         # Only fetch contribution data from this year onward. Older years are
         # skipped, which avoids failures (e.g. rate limiting / forbidden) on
         # historical data we don't care about.
-        SINCE_YEAR: 2023
+        SINCE_YEAR: 2022
 
     - name: Commit to the repo
       run: |
