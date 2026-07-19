@@ -59,6 +59,10 @@ const Args = struct {
     exclude_repos: ?[]const u8 = null,
     exclude_langs: ?[]const u8 = null,
     exclude_private: bool = false,
+    // Only render the top N most-used languages in the languages SVG. This
+    // avoids cluttering the output with many barely-used languages. Set to 0 to
+    // show all languages.
+    top_languages: usize = 5,
     overview_output_file: ?[]const u8 = null,
     languages_output_file: ?[]const u8 = null,
     overview_template: ?[]const u8 = null,
@@ -129,13 +133,18 @@ fn languages(
     arena: *std.heap.ArenaAllocator,
     stats: anytype,
     template: []const u8,
+    top: usize,
 ) ![]const u8 {
     const a = arena.allocator();
-    const progress = try a.alloc([]const u8, stats.languages.count());
-    const lang_list = try a.alloc([]const u8, stats.languages.count());
+    // Limit the number of languages rendered to the top `top` most-used ones.
+    // A value of 0 means show all languages.
+    const count_total = stats.languages.count();
+    const shown = if (top == 0) count_total else @min(top, count_total);
+    const progress = try a.alloc([]const u8, shown);
+    const lang_list = try a.alloc([]const u8, shown);
     for (
-        stats.languages.keys(),
-        stats.languages.values(),
+        stats.languages.keys()[0..shown],
+        stats.languages.values()[0..shown],
         progress,
         lang_list,
         0..,
