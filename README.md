@@ -147,6 +147,14 @@ and retrieve the images.
    - Lists for `EXCLUDE_REPOS` and `EXCLUDE_LANGS` can use globbing patterns.
      For example, to exclude all repos by user "jstrieb", add `jstrieb/*` to
      `EXCLUDE_REPOS`.
+   - To control how many languages are shown in the languages image, set the
+     `TOP_LANGUAGES` secret (or environment variable) to the number of the most
+     used languages you want to display. This keeps the image from being
+     cluttered with many barely-used languages.
+     - The default is `5`.
+     - Set it to `0` to show all languages.
+     - The percentages shown are still calculated relative to all languages, so
+       the displayed percentages will not necessarily add up to 100%.
    - These can also be set directly in [the Actions
      workflow](.github/workflows/main.yml), but you should set them as secrets
      if you want to keep the repository names or languages private.
