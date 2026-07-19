@@ -45,6 +45,9 @@ jobs:
         EXCLUDE_REPOS: ${{ secrets.EXCLUDE_REPOS }}
         EXCLUDE_LANGS: ${{ secrets.EXCLUDE_LANGS }}
         EXCLUDE_PRIVATE: "false"
+        # Only render the top N most-used languages in the languages SVG. Set to
+        # 0 to show all languages. Defaults to 5.
+        TOP_LANGUAGES: 5
         SILENT: "true"
         # TODO: Remove this when they get their API working again
         # https://github.com/orgs/community/discussions/192970
