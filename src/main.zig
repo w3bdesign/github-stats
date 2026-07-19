@@ -356,6 +356,7 @@ pub fn main(init: std.process.Init) !void {
                     try readFile(arena.allocator(), io, template)
                 else
                     embedded_languages_template,
+                args.top_languages,
             ),
         );
     }
