@@ -134,19 +134,19 @@ div.ellipsis {
 <span class="progress">
 <span style="
   background-color: #3572A5; 
-  width: 78.205%;
+  width: 78.613%;
 " class="progress-item"></span><span style="
   background-color: #3178c6; 
-  width: 13.104%;
+  width: 12.883%;
 " class="progress-item"></span><span style="
   background-color: #f1e05a; 
-  width: 4.940%;
+  width: 4.828%;
 " class="progress-item"></span><span style="
   background-color: #4F5D95; 
-  width: 2.336%;
+  width: 2.283%;
 " class="progress-item"></span><span style="
-  background-color: #41b883; 
-  width: 0.359%;
+  background-color: #00ADD8; 
+  width: 0.356%;
 " class="progress-item"></span>
 </span>
 </div>
@@ -167,7 +167,7 @@ div.ellipsis {
       d="M8 4a4 4 0 100 8 4 4 0 000-8z"
   ></path></svg>
   <span class="lang">Python</span>
-  <span class="percent">78.21%</span>
+  <span class="percent">78.61%</span>
 </li>
 <li style="animation-delay: 300ms;">
   <svg 
@@ -183,7 +183,7 @@ div.ellipsis {
       d="M8 4a4 4 0 100 8 4 4 0 000-8z"
   ></path></svg>
   <span class="lang">TypeScript</span>
-  <span class="percent">13.10%</span>
+  <span class="percent">12.88%</span>
 </li>
 <li style="animation-delay: 450ms;">
   <svg 
@@ -199,7 +199,7 @@ div.ellipsis {
       d="M8 4a4 4 0 100 8 4 4 0 000-8z"
   ></path></svg>
   <span class="lang">JavaScript</span>
-  <span class="percent">4.94%</span>
+  <span class="percent">4.83%</span>
 </li>
 <li style="animation-delay: 600ms;">
   <svg 
@@ -215,13 +215,13 @@ div.ellipsis {
       d="M8 4a4 4 0 100 8 4 4 0 000-8z"
   ></path></svg>
   <span class="lang">PHP</span>
-  <span class="percent">2.34%</span>
+  <span class="percent">2.28%</span>
 </li>
 <li style="animation-delay: 750ms;">
   <svg 
       xmlns="http://www.w3.org/2000/svg" 
       class="octicon"
-      style="fill: #41b883;" 
+      style="fill: #00ADD8;" 
       viewBox="0 0 16 16" 
       version="1.1" 
       width="16" 
@@ -230,7 +230,7 @@ div.ellipsis {
       fill-rule="evenodd" 
       d="M8 4a4 4 0 100 8 4 4 0 000-8z"
   ></path></svg>
-  <span class="lang">Vue</span>
+  <span class="lang">Go</span>
   <span class="percent">0.36%</span>
 </li>
 
